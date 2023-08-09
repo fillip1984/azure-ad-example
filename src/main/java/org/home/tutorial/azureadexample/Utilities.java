@@ -23,7 +23,7 @@ public class Utilities {
      * @return Map of filteredClaims
      */
     public static Map<String, String> filterClaims(OidcUser principal) {
-        final String[] claimKeys = { "sub", "aud", "ver", "iss", "name", "oid", "preferred_username" };
+        final String[] claimKeys = { "sub", "aud", "ver", "iss", "name", "oid", "preferred_username", "groups" };
         final List<String> includeClaims = Arrays.asList(claimKeys);
 
         Map<String, String> filteredClaims = new HashMap<>();

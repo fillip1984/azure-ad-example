@@ -4,7 +4,10 @@
 package org.home.tutorial.azureadexample.controller;
 
 import org.home.tutorial.azureadexample.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SampleController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Add HTML partial fragment from /templates/content folder to request and serve
@@ -59,8 +64,24 @@ public class SampleController {
 
     // survey endpoint - did the sample address your needs?
     // not an integral a part of this tutorial.
+    @GetMapping(path = "/user_survey")
+    public String userSurvey(Model model) {
+        logger.info("Visiting ROLE_USER survey using authentication: {}",
+                SecurityContextHolder.getContext().getAuthentication());
+        return hydrateUI(model, "survey");
+    }
+
+    @GetMapping(path = "/admin_survey")
+    public String adminSurvey(Model model) {
+        logger.info("Visiting ROLE_ADMIN survey using authentication: {}",
+                SecurityContextHolder.getContext().getAuthentication());
+        return hydrateUI(model, "survey");
+    }
+
     @GetMapping(path = "/survey")
     public String survey(Model model) {
+        logger.info("Visiting unsecured survey using authentication: {}",
+                SecurityContextHolder.getContext().getAuthentication());
         return hydrateUI(model, "survey");
     }
 }
